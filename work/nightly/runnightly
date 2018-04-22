@@ -1,3 +1,11 @@
 #!/bin/tcsh
 
-cleartool setview -exec "runkwbuild $1" "$2" > /dev/null
+# Run a PRODUCTION build, report build status, do a Klocwork analysis on the
+# build
+cleartool setview -exec "runkwbuild $1" "$2" > /dev/null &
+
+# Run a BATCH_DEBUG build, report build status
+cleartool setview -exec "runbuild -c -e leigh.s.garbs@nasa.gov \"$1 -b BATCH_DEBUG\"" "$3" > /dev/null &
+
+# Wait for everything to get done
+wait
